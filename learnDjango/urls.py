@@ -16,8 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from blog import views
+
+"""
+urlpatterns = [
+    path(正则表达式, views视图函数，参数，别名),
+]
+参数说明：
+1、一个正则表达式字符串
+2、一个可调用对象，通常为一个视图函数或一个指定视图函数路径的字符串
+3、可选的要传递给视图函数的默认参数（字典形式）
+4、一个可选的name参数(别名)
+"""
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index', views.hello),
     path('',views.index, name = 'index'),
+    path('orm/',views.orm),
 ]

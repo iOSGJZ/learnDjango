@@ -14,3 +14,8 @@ def index(request):
         'blog_index':blog_index,
     }
     return render(request, 'index.html',context)
+
+def orm(request):
+    #增加一篇文章
+    models.Article.objects.create(title='增加标题一', category_id=3, body='增加内容一',user_id=1)
+    return HttpResponse('orm')
