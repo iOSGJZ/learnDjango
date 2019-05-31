@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog',#在这里注册创建的APP
 ]
-
+#中间件，自己写的中间件要注册在系统的后面
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'learnDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates'),],#项目根目录下创建的templates文件夹
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,16 +70,53 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'learnDjango.wsgi.application'
 
-
+#数据库配置，默认是sqlite
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+#MySQL配置
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'test', #数据库名称
+#         'USER': 'root', #数据库用户名
+#         'PASSWORD': 'password', #数据库密码
+#         'HOST': '', #数据库主机，留空默认为localhost
+#         'PORT': '3306', #数据库端口
+#     }
+# }
+#由于mysql默认引擎为MySQLdb, 在__init__.py文件中添加下面代码
+#在Python3中必须替换为pymysql,可在主配置文件（和项目同名的文件下，不是APP配置文件）中增加如下代码
+#import pymysql
+#pymysql.install_as_MySQLdb()
+#如果找不到pymysql版块，则通过pip install pymysql进行安装.
+
+
+#打印日志到屏幕
+#当你的操作与数据库相关时 会将我们的写的语句翻译成sql语句在服务端打印。
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'DEBUG',
+        },
+    }
+}
+
 
 
 # Password validation
@@ -102,10 +140,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
+#这里有基础设置，语言设置为中文，时区设置为中国时区
+LANGUAGE_CODE = 'zh-hans'
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -113,8 +151,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+#配置静态文件
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+#静态文件别名
 STATIC_URL = '/static/'
+#静态文件地址拼接，后面’static‘文件为自己建立的存放静态文件（js,img,css）的文件名
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR,'static'), #主文件下静态文件
+#     os.path.join(BASE_DIR,'blog',statics),#项目blog文件下静态文件
+# )
