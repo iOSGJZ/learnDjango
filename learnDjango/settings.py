@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',#在这里注册创建的APP
-    'rest_framework',
+    'rest_framework',#在这里注册rest_framework
     'quickstart',
+    'snippets',
+
 ]
 #中间件，自己写的中间件要注册在系统的后面
 MIDDLEWARE = [
