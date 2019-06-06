@@ -4,7 +4,7 @@
 """
 from rest_framework import serializers
 from snippets.models import Snippet,LANGUAGE_CHOICES,STYLE_CHOICES
-
+from django.contrib.auth.models import User
 # class SnippetSerializers(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
 #     title = serializers.CharField(required=False,allow_blank=True,max_length=100)
@@ -42,6 +42,14 @@ ModelSerializer类并不会做任何特别神奇的事情，它们只是创建�
 """
 
 class SnippetSerializers(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Snippet
-        fields = ('id','title','code','linenos','language','style')
+        fields = ('id','title','code','linenos','language','style','owner')
+
+class UserSerializer(serializers.ModelSerializer):
+    snippets = serializers.PrimaryKeyRelatedField(many=True,queryset=Snippet.objects.all())
+    class Meta:
+        model = User
+        fields = ('id','username','snippets')
+
